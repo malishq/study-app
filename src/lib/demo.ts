@@ -1,5 +1,5 @@
 import { addDays, dayKey, pad2 } from "./dates";
-import type { Course, Item, Payload } from "./types";
+import type { Brs, BrsItem, Course, Item, Payload } from "./types";
 
 function at(now: Date, days: number, hh = 23, mm = 59): string {
   const d = addDays(now, days);
@@ -23,12 +23,25 @@ function item(id: string, name: string, patch: Partial<Item> = {}): Item {
   };
 }
 
-function course(id: string, short: string, name: string, items: Item[], folders: [string, string[]][]): Course {
+function brs(scores: [number | null, number | null, number | null, number | null], max: number, result: string, items: [string, string, BrsItem["kind"], number | null, number][]): Brs {
+  const names = ["Посещаемость", "Текущий контроль", "Семестровый контроль", "Достижения"];
+  const maxes = [20, 40, 40, 10];
+  const sum = scores.reduce<number>((n, v) => n + (v ?? 0), 0);
+  return {
+    parts: names.map((n, i) => ({ name: n, score: scores[i], max: maxes[i] })),
+    total: { name: "Сумма баллов", score: sum, max },
+    result,
+    items: items.map(([n, category, kind, score, mx]) => ({ name: n, category, kind, score, max: mx, url: "" })),
+  };
+}
+
+function course(id: string, short: string, name: string, items: Item[], folders: [string, string[]][], grades: Brs | null = null): Course {
   return {
     id,
     short,
     name,
     url: `https://sdo.example.edu/course/view.php?id=${id}`,
+    brs: grades,
     items,
     materials: [
       ...folders.map(([title, files], i) => ({ id: `${id}0${i}`, type: "folder", typeLabel: "папка", name: title, url: `https://sdo.example.edu/mod/folder/view.php?id=${id}0${i}`, files })),
@@ -58,7 +71,8 @@ export function demoPayload(now = new Date(), lite = false): Payload {
         item("1014", "Коллоквиум", { due: at(now, 58) }),
         item("1015", "Тест № 1", { kind: "quiz", due: at(now, 5), status: "" }),
         item("1016", "Контрольная работа № 1", { ...done, grade: "9,0" }),
-      ], [["Лекции", ["Лекция 1. Пределы.pdf", "Лекция 2. Производная.pdf", "Лекция 3. Интеграл.pdf"]], ["Практические занятия", ["ПЗ 1. Пределы.pdf", "ПЗ 2. Ряды.pdf"]]]),
+      ], [["Лекции", ["Лекция 1. Пределы.pdf", "Лекция 2. Производная.pdf", "Лекция 3. Интеграл.pdf"]], ["Практические занятия", ["ПЗ 1. Пределы.pdf", "ПЗ 2. Ряды.pdf"]]],
+        brs([9, 14, null, null], 120, "2 (неудовлетворительно)", [["Контрольная работа № 1", "Текущий контроль", "assign", 9, 10], ["Тест № 1", "Текущий контроль", "quiz", 5, 5], ["Контрольная работа № 2", "Текущий контроль", "assign", null, 10], ["Коллоквиум", "", "assign", null, 15]])),
       course("102", "БД", "Теория баз данных", [
         item("1021", "Практическое задание 1", { due: at(now, -24) }),
         item("1022", "Практическое задание 2", { due: at(now, -10) }),
@@ -66,7 +80,8 @@ export function demoPayload(now = new Date(), lite = false): Payload {
         item("1024", "Практическое задание 4", { ...done, grade: "10,0" }),
         item("1025", "Самостоятельная работа 1"),
         item("1026", "Тестирование 1", { kind: "quiz", status: "", dueText: "Нет даты закрытия" }),
-      ], [["Методические указания", ["ПЗ 1. Создание базы.pdf", "ПЗ 2. ER-диаграмма.pdf", "ПЗ 3. Нормализация.pdf", "ПЗ 4. Запросы.pdf"]]]),
+      ], [["Методические указания", ["ПЗ 1. Создание базы.pdf", "ПЗ 2. ER-диаграмма.pdf", "ПЗ 3. Нормализация.pdf", "ПЗ 4. Запросы.pdf"]]],
+        brs([8.6, 18, null, null], 120, "Не зачтено", [["Практическое задание 3", "Текущий контроль", "assign", 8, 10], ["Практическое задание 4", "Текущий контроль", "assign", 10, 10], ["Тестирование 1", "Текущий контроль", "quiz", null, 5]])),
       course("103", "ТМП", "Технологии и методы программирования", [
         item("1031", "Практическое задание № 2", { due: at(now, -2) }),
         item("1032", "Практическое задание № 3", { ...done, due: at(now, 5) }),
@@ -88,7 +103,8 @@ export function demoPayload(now = new Date(), lite = false): Payload {
         item("1053", "Защита рабочих тетрадей № 5-8"),
         item("1054", "Самостоятельная работа 1"),
         item("1055", "Контрольный тест № 2", { kind: "quiz", status: "", due: at(now, 47), opens: at(now, 40, 9, 0) }),
-      ], [["Лекции", ["Лекция 1. Введение.pdf", "Лекция 2. Данные.pdf"]], ["Рабочие тетради", ["Тетрадь 1.pdf", "Тетрадь 2.pdf", "Тетрадь 3.pdf"]]]),
+      ], [["Лекции", ["Лекция 1. Введение.pdf", "Лекция 2. Данные.pdf"]], ["Рабочие тетради", ["Тетрадь 1.pdf", "Тетрадь 2.pdf", "Тетрадь 3.pdf"]]],
+        brs([7.5, 20, 40, null], 120, "Зачтено", [["Защита рабочих тетрадей № 1-2", "Текущий контроль", "assign", 8, 8], ["Защита рабочих тетрадей № 3-4", "Текущий контроль", "assign", 8, 8], ["Контрольный тест № 1", "Текущий контроль", "quiz", 4, 4]])),
       course("106", "Англ", "Иностранный язык (английский)", [
         item("1061", "Контрольная работа № 1", { ...done, grade: "9,0" }),
         item("1062", "Контрольная работа № 2", { due: at(now, 1, 18, 0) }),

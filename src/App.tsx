@@ -12,6 +12,7 @@ import { useTheme } from "./lib/useTheme";
 import { DataProvider, useData } from "./store/useData";
 import { Sheet } from "./components/Sheet";
 import { TabBar, type Tab } from "./components/TabBar";
+import { BrsScreen } from "./screens/BrsScreen";
 import { CheckScreen } from "./screens/CheckScreen";
 import { CommandSheet } from "./screens/CommandSheet";
 import { DeadlinesScreen } from "./screens/DeadlinesScreen";
@@ -99,10 +100,12 @@ function Shell() {
     screen = <LoadingScreen />;
   } else if (data.status === "nokey" || !payload) {
     screen = data.status === "error" ? <ErrorScreen error={data.error} onRetry={data.reload} /> : <NoKeyScreen />;
-  } else if (tab === "subjects" && course) {
+  } else if ((tab === "subjects" || tab === "brs") && course) {
     screen = <SubjectDetailScreen course={course} now={now} onOpen={openEntry} />;
   } else if (tab === "subjects") {
     screen = <SubjectsScreen payload={payload} onOpenCourse={(c) => setCourseId(c.id)} />;
+  } else if (tab === "brs") {
+    screen = <BrsScreen payload={payload} now={now} onOpenCourse={(c) => setCourseId(c.id)} />;
   } else if (tab === "deadlines") {
     screen = <DeadlinesScreen payload={payload} now={now} onOpen={openEntry} />;
   } else if (tab === "check" && canCheck) {
@@ -129,7 +132,7 @@ function Shell() {
 
   return (
     <div className="min-h-dvh bg-ground pt-[var(--safe-top)] lg:mx-auto lg:flex lg:max-w-[1040px] lg:gap-8 lg:px-8 lg:pt-8">
-      <TabBar active={courseId ? "subjects" : (tab === "check" && !canCheck ? "home" : tab)} onChange={changeTab} overdue={overdue} semester={payload?.semester ?? ""} showCheck={canCheck} />
+      <TabBar active={courseId && tab !== "brs" ? "subjects" : (tab === "check" && !canCheck ? "home" : tab)} onChange={changeTab} overdue={overdue} semester={payload?.semester ?? ""} showCheck={canCheck} />
       <main ref={main} className="pb-[calc(84px+var(--safe-bottom))] lg:min-w-0 lg:flex-1 lg:pb-16">
         {screen}
       </main>

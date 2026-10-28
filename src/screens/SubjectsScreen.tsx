@@ -1,8 +1,10 @@
 import { useMemo, useState } from "react";
+import { hasBrs } from "../lib/brs";
 import { plural } from "../lib/dates";
 import { courseProgress, isPending, materialsByKind, sortByDue } from "../lib/model";
 import { hapticSelection, openExternal } from "../lib/telegram";
 import type { Course, Entry, Material, Payload } from "../lib/types";
+import { BrsCard } from "../components/BrsCard";
 import { Button } from "../components/Button";
 import { Card, CardHeader } from "../components/Card";
 import { Icon } from "../components/Icon";
@@ -164,6 +166,8 @@ export function SubjectDetailScreen({ course, now, onOpen }: DetailProps) {
       </header>
 
       <div className="flex flex-col gap-4 px-4 lg:px-0">
+        {hasBrs(course) && <BrsCard brs={course.brs} />}
+
         <Card>
           <CardHeader title="Не сдано" aside={<span className="num text-[20px] font-semibold text-accent">{pending.length}</span>} />
           {pending.length > 0 ? (

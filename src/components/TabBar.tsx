@@ -1,12 +1,13 @@
 import { Icon, type IconName } from "./Icon";
 import { Mark } from "./Mark";
 
-export type Tab = "home" | "subjects" | "deadlines" | "check";
+export type Tab = "home" | "subjects" | "deadlines" | "brs" | "check";
 
 export const TABS: { id: Tab; label: string; icon: IconName }[] = [
   { id: "home", label: "Главная", icon: "home" },
   { id: "subjects", label: "Предметы", icon: "subjects" },
   { id: "deadlines", label: "Сроки", icon: "deadlines" },
+  { id: "brs", label: "БРС", icon: "brs" },
   { id: "check", label: "Проверка", icon: "check" },
 ];
 

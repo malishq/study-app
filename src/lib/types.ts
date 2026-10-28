@@ -23,6 +23,27 @@ export interface Material {
   files: string[];
 }
 
+export interface BrsScore {
+  name: string;
+  score: number | null;
+  max: number;
+}
+
+export type BrsItemKind = "assign" | "quiz" | "manual" | "calc" | "other";
+
+export interface BrsItem extends BrsScore {
+  category: string;
+  kind: BrsItemKind;
+  url: string;
+}
+
+export interface Brs {
+  parts: BrsScore[];
+  total: BrsScore | null;
+  result: string;
+  items: BrsItem[];
+}
+
 export interface Course {
   id: string;
   short: string;
@@ -30,6 +51,7 @@ export interface Course {
   url: string;
   items: Item[];
   materials: Material[];
+  brs?: Brs | null;
 }
 
 export interface QueueEntry {
