@@ -52,6 +52,114 @@
   color-scheme: dark;
 }
 
+:root[data-accent="lavender"] {
+  --surface: #131218;
+  --raised: #1f1b29;
+  --tile: #e3d5ff;
+  --tile-ink: #2b2140;
+  --active: #28223a;
+  --border: #2a2433;
+  --rule: #201c28;
+  --control: #4f4566;
+  --ink: #f5f0ff;
+  --muted: #b4a8cc;
+  --accent: #c9b2ff;
+  --primary: #d6c4ff;
+  --on-primary: #2b2140;
+  --pill-neutral-bg: #26212f;
+  --pill-neutral-ink: #ddd3f0;
+}
+
+:root[data-accent="blue"] {
+  --surface: #111418;
+  --raised: #1a2129;
+  --tile: #cfe6ff;
+  --tile-ink: #16283d;
+  --active: #1f2833;
+  --border: #222a33;
+  --rule: #1b2128;
+  --control: #44556a;
+  --ink: #f0f7ff;
+  --muted: #a3b6cc;
+  --accent: #9fcbff;
+  --primary: #b8d9ff;
+  --on-primary: #16283d;
+  --pill-neutral-bg: #1f2731;
+  --pill-neutral-ink: #cfe0f2;
+}
+
+:root[data-accent="mint"] {
+  --surface: #111613;
+  --raised: #19231e;
+  --tile: #c8f2df;
+  --tile-ink: #133126;
+  --active: #1d2b25;
+  --border: #212c26;
+  --rule: #1a221e;
+  --control: #42594e;
+  --ink: #effff8;
+  --muted: #9fc4b4;
+  --accent: #8fe3bd;
+  --primary: #a9ecd0;
+  --on-primary: #133126;
+  --pill-neutral-bg: #1c2722;
+  --pill-neutral-ink: #cdeadc;
+}
+
+:root[data-accent="peach"] {
+  --surface: #171310;
+  --raised: #241c17;
+  --tile: #ffdcc4;
+  --tile-ink: #3d2414;
+  --active: #2d221c;
+  --border: #2e241e;
+  --rule: #251d18;
+  --control: #5c4a3e;
+  --ink: #fff5ef;
+  --muted: #ccae9c;
+  --accent: #ffb88f;
+  --primary: #ffc9a8;
+  --on-primary: #3d2414;
+  --pill-neutral-bg: #2b211b;
+  --pill-neutral-ink: #f0d6c6;
+}
+
+:root[data-accent="cherry"] {
+  --surface: #171012;
+  --raised: #26181b;
+  --tile: #ffc9cf;
+  --tile-ink: #3d141b;
+  --active: #2f1d21;
+  --border: #301f23;
+  --rule: #26191c;
+  --control: #5e3f45;
+  --ink: #fff0f2;
+  --muted: #cca2a8;
+  --accent: #ff8f9e;
+  --primary: #ff9fae;
+  --on-primary: #3d141b;
+  --pill-neutral-bg: #2c1c1f;
+  --pill-neutral-ink: #f0cdd2;
+}
+
+:root[data-accent="mono"] {
+  --surface: #121212;
+  --raised: #1e1e1e;
+  --tile: #e8e8e8;
+  --tile-ink: #1a1a1a;
+  --active: #262626;
+  --border: #2a2a2a;
+  --rule: #202020;
+  --control: #505050;
+  --ink: #f5f5f5;
+  --muted: #a8a8a8;
+  --accent: #d4d4d4;
+  --primary: #ececec;
+  --on-primary: #1a1a1a;
+  --pill-neutral-bg: #242424;
+  --pill-neutral-ink: #dcdcdc;
+}
+
 @layer base {
   html,
   body,

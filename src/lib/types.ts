@@ -68,6 +68,15 @@ export interface Report {
   at: string | null;
 }
 
+export interface Account {
+  name: string;
+  email: string;
+  login: string;
+  telegram: string;
+  since: string | null;
+  checked: string | null;
+}
+
 export interface Payload {
   v: number;
   generated: string;
@@ -80,7 +89,8 @@ export interface Payload {
   queueAt: string | null;
   reports: Partial<Record<"check" | "submit" | "draft", Report>>;
   bot?: string;
-  features?: { check?: boolean };
+  features?: { check?: boolean; account?: boolean };
+  account?: Account;
 }
 
 export interface CourseRef {
