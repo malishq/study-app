@@ -5,14 +5,16 @@ import type { Entry } from "../lib/types";
 import { Button } from "../components/Button";
 import { Icon } from "../components/Icon";
 import { Pill } from "../components/Pill";
+import { UploadBox } from "../components/UploadBox";
 
 interface Props {
   entry: Entry;
   now: Date;
   onGoCourse(courseId: string): void;
+  canUpload?: boolean;
 }
 
-export function ItemSheet({ entry, now, onGoCourse }: Props) {
+export function ItemSheet({ entry, now, onGoCourse, canUpload = false }: Props) {
   const status = statusOf(entry, now);
   const due = dueDate(entry);
   const opens = opensDate(entry);
@@ -46,6 +48,7 @@ export function ItemSheet({ entry, now, onGoCourse }: Props) {
           </div>
         ))}
       </dl>
+      {canUpload && entry.kind === "assign" && <UploadBox key={entry.id} cmid={entry.id} submitted={entry.submitted} />}
       <div className="mt-4 flex flex-col gap-2">
         <Button className="w-full" onClick={() => openExternal(entry.url)}>
           <Icon name="link" size={18} />

@@ -89,7 +89,7 @@ export interface Payload {
   queueAt: string | null;
   reports: Partial<Record<"check" | "submit" | "draft", Report>>;
   bot?: string;
-  features?: { check?: boolean; account?: boolean };
+  features?: { check?: boolean; account?: boolean; upload?: boolean };
   account?: Account;
 }
 

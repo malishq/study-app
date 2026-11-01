@@ -140,7 +140,7 @@ function Shell() {
         {screen}
       </main>
       <Sheet open={sheet !== null} title={sheetTitle} onClose={closeSheet}>
-        {sheet?.kind === "item" && <ItemSheet entry={sheet.entry} now={now} onGoCourse={goCourse} />}
+        {sheet?.kind === "item" && <ItemSheet entry={sheet.entry} now={now} onGoCourse={goCourse} canUpload={payload?.features?.upload === true} />}
         {sheet?.kind === "command" && <CommandSheet command={sheet.command} bot={bot} onClose={closeSheet} />}
       </Sheet>
     </div>

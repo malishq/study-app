@@ -55,7 +55,7 @@ export function demoPayload(now = new Date(), lite = false): Payload {
   if (lite) {
     const full = demoPayload(now, false);
     const account = { name: "Иванов Иван Иванович", email: "ivanov.i.i@edu.mirea.ru", login: "ivanov.i.i@edu.mirea.ru", telegram: "@ivanov", since: at(now, -3, 14, 10), checked: at(now, 0, 8, 51) };
-    return { ...full, queue: [], queueAt: null, reports: {}, features: { check: false, account: true }, bot: "", account };
+    return { ...full, queue: [], queueAt: null, reports: {}, features: { check: false, account: true, upload: true }, bot: "", account };
   }
   return {
     v: 1,
