@@ -110,7 +110,7 @@ function Shell() {
   } else if (tab === "deadlines") {
     screen = <DeadlinesScreen payload={payload} now={now} onOpen={openEntry} />;
   } else if (tab === "profile" && payload.account) {
-    screen = <ProfileScreen account={payload.account} bot={bot} now={now} />;
+    screen = <ProfileScreen account={payload.account} bot={bot} now={now} hideControl={payload.settings?.hideControl === true} onSettingsChanged={data.reload} />;
   } else if (tab === "check" && canCheck) {
     screen = <CheckScreen payload={payload} now={now} onCommand={runCommand} />;
   } else {

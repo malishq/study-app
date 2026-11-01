@@ -1,17 +1,21 @@
 import { useState } from "react";
 import { ACCENTS, applyAccent, currentAccent, saveAccent, type Accent } from "../lib/accent";
 import { formatDay, formatStamp, parseISO } from "../lib/dates";
-import { hapticSelection, openTelegramLink } from "../lib/telegram";
+import { saveSetting } from "../lib/settings";
+import { hapticNotify, hapticSelection, openTelegramLink } from "../lib/telegram";
 import type { Account } from "../lib/types";
 import { Button } from "../components/Button";
 import { Card, CardHeader } from "../components/Card";
 import { Icon } from "../components/Icon";
 import { ScreenTitle } from "../components/ScreenTitle";
+import { Switch } from "../components/Switch";
 
 interface Props {
   account: Account;
   bot: string;
   now: Date;
+  hideControl: boolean;
+  onSettingsChanged(): void;
 }
 
 function initials(name: string): string {
@@ -23,8 +27,27 @@ function initials(name: string): string {
   return letters.join("").toUpperCase() || "?";
 }
 
-export function ProfileScreen({ account, bot, now }: Props) {
+export function ProfileScreen({ account, bot, now, hideControl, onSettingsChanged }: Props) {
   const [accent, setAccent] = useState<Accent>(currentAccent);
+  const [hide, setHide] = useState(hideControl);
+  const [saving, setSaving] = useState(false);
+  const [failed, setFailed] = useState(false);
+
+  const toggleHide = async (next: boolean) => {
+    setHide(next);
+    setSaving(true);
+    setFailed(false);
+    hapticSelection();
+    const ok = await saveSetting(`hide_control:${next ? 1 : 0}`);
+    setSaving(false);
+    if (ok) {
+      onSettingsChanged();
+      return;
+    }
+    setHide(!next);
+    setFailed(true);
+    hapticNotify("error");
+  };
 
   const pick = (next: Accent) => {
     if (next === accent) return;
@@ -64,6 +87,18 @@ export function ProfileScreen({ account, bot, now }: Props) {
               </div>
             ))}
           </dl>
+        </Card>
+
+        <Card>
+          <CardHeader title="Настройки" />
+          <div className="flex items-center justify-between gap-4 px-5 pt-2 pb-5">
+            <span className="min-w-0">
+              <span className="block text-[16px] leading-snug font-medium">Скрывать контрольные работы</span>
+              <span className="mt-1 block text-[14px] leading-snug text-muted">Аудиторные контрольные пишут на паре: они пропадут из заданий, сроков и напоминаний бота. Тесты останутся.</span>
+            </span>
+            <Switch checked={hide} disabled={saving} label="Скрывать контрольные работы" onChange={toggleHide} />
+          </div>
+          {failed && <p className="px-5 pb-4 text-[14px] text-negative">Не сохранилось, попробуй ещё раз.</p>}
         </Card>
 
         <Card>

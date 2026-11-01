@@ -91,6 +91,7 @@ export interface Payload {
   bot?: string;
   features?: { check?: boolean; account?: boolean; upload?: boolean };
   account?: Account;
+  settings?: { hideControl?: boolean };
 }
 
 export interface CourseRef {
